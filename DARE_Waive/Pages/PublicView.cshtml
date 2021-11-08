@@ -1,0 +1,1464 @@
+﻿@page
+@model PublicViewModel
+@{
+    ViewData["Title"] = "Public View";
+}
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Get started with MapView - Create a 2D map</title>
+<link rel="stylesheet" href="https://js.arcgis.com/4.21/esri/css/main.css">
+<script src="https://js.arcgis.com/4.21/"></script>
+<style>
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 650px;
+        width: 650px;
+    }
+</style>
+<div id="viewDiv"></div>
+
+
+<script>
+    require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer",
+        "esri/renderers/SimpleRenderer",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/widgets/Legend",
+        "esri/Graphic",
+        "dojo/domReady!"
+    ], function (Map, MapView, FeatureLayer, SimpleRenderer, SimpleFillSymbol, Legend, Graphic) {
+
+        //-------------------------------------------Kraftwerke--------------------------------------------------------------
+
+        
+
+        //-------------------------------------------Netzbetreibern--------------------------------------------------------------
+
+        const markerSymbol_Netzbetreibern = {
+            type: "simple-marker",
+            color: [0, 0, 255],
+            outline: {
+                color: [255, 128, 0],
+                width: 2
+            }
+        };
+
+        const point_Netzbetreiber_Mitte = {
+            type: "point",
+            longitude: 9.4149852,
+            latitude: 48.781334
+        };
+
+        const pointAtt_Netzbetreiber_Mitte = {
+            Name: "Netzbetreiber Mitte",
+            Netzbetreiber_MP_ID: "0000000000100",
+            Redispatch_Bedarf: " +/- Y MW",
+            Regelzone: "10YDE - ENBW----- N",
+            Anteil_Erneurbare: "X %",
+            Operator: "Netze BW",
+            Operator_Typ: "Verteilnetzbetreiber"
+        };
+
+
+        const point_Netzbetreiber_Nord = {
+            type: "point",
+            longitude: 9.62,
+            latitude: 49.1
+        };
+
+
+
+        const pointAtt_Netzbetreiber_Nord = {
+            Name: "Netzbetreiber Nord",
+            Netzbetreiber_MP_ID: "0000000000101",
+            Redispatch_Bedarf: " +/- Y MW",
+            Regelzone: "10YDE - ENBW----- N",
+            Anteil_Erneurbare: "X %",
+            Operator: "Netze BW",
+            Operator_Typ: "Verteilnetzbetreiber"
+        };
+
+        const point_Netzbetreiber_Sued = {
+            type: "point",
+            longitude: 8.01516,
+            latitude: 48.002228
+        };
+
+
+        const pointAtt_Netzbetreiber_Sued = {
+            Name: " Netzbetreiber Süd",
+            Netzbetreiber_MP_ID: "0000000000102",
+            Redispatch_Bedarf: " +/- Y MW",
+            Regelzone: "10YDE - ENBW----- N",
+            Anteil_Erneurbare: "X %",
+            Operator: "Netze BW",
+            Operator_Typ: "Verteilnetzbetreiber"
+        };
+
+        const point_Netzbetreiber_Ost = {
+            type: "point",
+            longitude: 9.91516,
+            latitude: 48.702228
+        };
+
+
+
+        const pointAtt_Netzbetreiber_Ost = {
+            Name: "Netzbetreiber Ost",
+            Netzbetreiber_MP_ID: "0000000000103",
+            Redispatch_Bedarf: "+/- Y MW",
+            Regelzone: "10YDE - ENBW----- N",
+            Anteil_Erneurbare: "X %",
+            Operator: "Netze BW",
+            Operator_Typ: "Verteilnetzbetreiber"
+        };
+
+
+        const point_Netzbetreiber_West = {
+            type: "point",
+            longitude: 8.50662133333,
+            latitude: 49.302228
+        };
+
+
+
+        const pointAtt_Netzbetreiber_West = {
+            Name: "Netzbetreiber West",
+            Netzbetreiber_MP_ID: "0000000000104",
+            Redispatch_Bedarf: "+/- X MW",
+            Regelzone: "10YDE - ENBW----- N",
+            Anteil_Erneurbare: "X %",
+            Operator: "Netze BW",
+            Operator_Typ: "Verteilnetzbetreiber"
+        };
+
+        const pointGraphic_Netzbetreiber_Mitte = new Graphic({
+            geometry: point_Netzbetreiber_Mitte,
+            symbol: markerSymbol_Netzbetreibern,
+            attributes: pointAtt_Netzbetreiber_Mitte,
+            popupTemplate: {
+                title: "{Netzbetreiber Mitte}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Name"
+                            },
+                            {
+                                fieldName: "Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Redispatch_Bedarf"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            },
+                            {
+                                fieldName: "Anteil_Erneurbare"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        const pointGraphic_Netzbetreiber_Nord = new Graphic({
+            geometry: point_Netzbetreiber_Nord,
+            symbol: markerSymbol_Netzbetreibern,
+            attributes: pointAtt_Netzbetreiber_Nord,
+            popupTemplate: {
+                title: "{Netzbetreiber Nord}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Name"
+                            },
+                            {
+                                fieldName: "Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Redispatch_Bedarf"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            },
+                            {
+                                fieldName: "Anteil_Erneurbare"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        const pointGraphic_Netzbetreiber_Sued = new Graphic({
+            geometry: point_Netzbetreiber_Sued,
+            symbol: markerSymbol_Netzbetreibern,
+            attributes: pointAtt_Netzbetreiber_Sued,
+            popupTemplate: {
+                title: "{Netzbetreiber Süd}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Name"
+                            },
+                            {
+                                fieldName: "Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Redispatch_Bedarf"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            },
+                            {
+                                fieldName: "Anteil_Erneurbare"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        const pointGraphic_Netzbetreiber_Ost = new Graphic({
+            geometry: point_Netzbetreiber_Ost,
+            symbol: markerSymbol_Netzbetreibern,
+            attributes: pointAtt_Netzbetreiber_Ost,
+            popupTemplate: {
+                title: "{Netzbetreiber Ost}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Name"
+                            },
+                            {
+                                fieldName: "Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Redispatch_Bedarf"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            },
+                            {
+                                fieldName: "Anteil_Erneurbare"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        const pointGraphic_Netzbetreiber_West = new Graphic({
+            geometry: point_Netzbetreiber_West,
+            symbol: markerSymbol_Netzbetreibern,
+            attributes: pointAtt_Netzbetreiber_West,
+            popupTemplate: {
+                title: "{Netzbetreiber West}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Name"
+                            },
+                            {
+                                fieldName: "Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Redispatch_Bedarf"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            },
+                            {
+                                fieldName: "Anteil_Erneurbare"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+
+        //------------------Kraftwerke zu Verteilnetze-------------------------------------------
+
+        //------------------------------------------------------------- Übertragungsnetz-----------------------------------------
+
+
+        const lineSymbol_Ubertragungsnetz1 = {
+            type: "simple-line", // autocasts as SimpleLineSymbol()
+            color: [255, 255, 255],
+            width: 6
+        };
+
+        const lineSymbol_Ubertragungsnetz2 = {
+            type: "simple-line", // autocasts as SimpleLineSymbol()
+            color: [204, 204, 40],
+            width: 3
+        };
+
+        const polyline_Ubertragungsnetz1 = {
+            type: "polyline",
+            paths: [
+                [9.62, 49.1],
+                [9.91516, 48.702228]]
+        };
+        const lineAtt_Ubertragungsnetz1 = {
+            Leitung_NR: "1",
+            Leitung_Name: "Nord-Ost",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Nord",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000101",
+            Leitung_2Netzbetreiber: "Netzbetreiber Ost",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000103",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz2 = {
+            type: "polyline",
+            paths: [
+                [9.62, 49.1],
+                [8.50662133333, 49.302228]]
+        };
+        const lineAtt_Ubertragungsnetz2 = {
+            Leitung_NR: "2",
+            Leitung_Name: "Nord-West",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Nord",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000101",
+            Leitung_2Netzbetreiber: "Netzbetreiber West",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000104",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz3 = {
+            type: "polyline",
+            paths: [
+                [8.01516, 48.002228],
+                [8.50662133333, 49.302228]]
+        };
+        const lineAtt_Ubertragungsnetz3 = {
+            Leitung_NR: "3",
+            Leitung_Name: "Süd-West",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Süd",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000102",
+            Leitung_2Netzbetreiber: "Netzbetreiber West",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000104",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz4 = {
+            type: "polyline",
+            paths: [
+                [8.01516, 48.002228],
+                [9.91516, 48.702228]]
+        };
+        const lineAtt_Ubertragungsnetz4 = {
+            Leitung_NR: "4",
+            Leitung_Name: "Süd-Ost",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Süd",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000102",
+            Leitung_2Netzbetreiber: "Netzbetreiber Ost",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000103",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz5 = {
+            type: "polyline",
+            paths: [
+
+                [9.4149852, 48.781334],
+                [9.62, 49.1]]
+        };
+        const lineAtt_Ubertragungsnetz5 = {
+            Leitung_NR: "5",
+            Leitung_Name: "Mitte-Nord",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Mitte",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000100",
+            Leitung_2Netzbetreiber: "Netzbetreiber Nord",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000101",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz6 = {
+            type: "polyline",
+            paths: [
+                [9.4149852, 48.781334],
+                [8.01516, 48.002228]]
+        };
+        const lineAtt_Ubertragungsnetz6 = {
+            Leitung_NR: "6",
+            Leitung_Name: "Mitte-Süd",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Mitte",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000100",
+            Leitung_2Netzbetreiber: "Netzbetreiber Süd",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000102",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz7 = {
+            type: "polyline",
+            paths: [
+                [9.4149852, 48.781334],
+                [8.50662133333, 49.302228]]
+        };
+        const lineAtt_Ubertragungsnetz7 = {
+            Leitung_NR: "7",
+            Leitung_Name: "Mitte-West",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Mitte",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000100",
+            Leitung_2Netzbetreiber: "Netzbetreiber West",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000104",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+        const polyline_Ubertragungsnetz8 = {
+            type: "polyline",
+            paths: [
+                [9.4149852, 48.781334],
+                [9.91516, 48.702228]]
+        };
+
+        const lineAtt_Ubertragungsnetz8 = {
+            Leitung_NR: "8",
+            Leitung_Name: "Mitte-Ost",
+            Leitungsbelastung: "X %",
+            Leitungsbelastung_MW: "Y MW",
+            Spannung: "380-kV",
+            Frequenz: "50 Hz ",
+            Leitung_1Netzbetreiber: "Netzbetreiber Mitte",
+            Leitung_1Netzbetreiber_MP_ID: "0000000000100",
+            Leitung_2Netzbetreiber: "Netzbetreiber Ost",
+            Leitung_2Netzbetreiber_MP_ID: "0000000000103",
+            Regelzone: "10YDE - ENBW----- N",
+            Operator: "TransnetBW",
+            Operator_Typ: "Übertragungs­netzbetreiber"
+        };
+
+
+
+        const polylineGraphic_Ubertragungsnetz11 = new Graphic({
+            geometry: polyline_Ubertragungsnetz1,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz1,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 1}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz12 = new Graphic({
+            geometry: polyline_Ubertragungsnetz1,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz1,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 1}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz21 = new Graphic({
+            geometry: polyline_Ubertragungsnetz2,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz2,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 2}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz22 = new Graphic({
+            geometry: polyline_Ubertragungsnetz2,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz2,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 2}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz31 = new Graphic({
+            geometry: polyline_Ubertragungsnetz3,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz3,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 3}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz32 = new Graphic({
+            geometry: polyline_Ubertragungsnetz3,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz3,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 3}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz41 = new Graphic({
+            geometry: polyline_Ubertragungsnetz4,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz4,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 4}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz42 = new Graphic({
+            geometry: polyline_Ubertragungsnetz4,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz4,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 4}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz51 = new Graphic({
+            geometry: polyline_Ubertragungsnetz5,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz5,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 5}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz52 = new Graphic({
+            geometry: polyline_Ubertragungsnetz5,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz5,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 5}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+
+        const polylineGraphic_Ubertragungsnetz61 = new Graphic({
+            geometry: polyline_Ubertragungsnetz6,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz6,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 6}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz62 = new Graphic({
+            geometry: polyline_Ubertragungsnetz6,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz6,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 6}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz71 = new Graphic({
+            geometry: polyline_Ubertragungsnetz7,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz7,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 7}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz72 = new Graphic({
+            geometry: polyline_Ubertragungsnetz7,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz7,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 7}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+
+        const polylineGraphic_Ubertragungsnetz81 = new Graphic({
+            geometry: polyline_Ubertragungsnetz8,
+            symbol: lineSymbol_Ubertragungsnetz1,
+            attributes: lineAtt_Ubertragungsnetz8,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 8}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        const polylineGraphic_Ubertragungsnetz82 = new Graphic({
+            geometry: polyline_Ubertragungsnetz8,
+            symbol: lineSymbol_Ubertragungsnetz2,
+            attributes: lineAtt_Ubertragungsnetz8,
+            popupTemplate: {
+                // autocasts as new PopupTemplate()
+                title: "{Ubertragungsnetz Leitung 8}",
+                content: [
+                    {
+                        type: "fields",
+                        fieldInfos: [
+                            {
+                                fieldName: "Leitung_NR"
+                            },
+                            {
+                                fieldName: "Leitung_Name"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung"
+                            },
+                            {
+                                fieldName: "Leitungsbelastung_MW"
+                            },
+                            {
+                                fieldName: "Spannung"
+                            },
+                            {
+                                fieldName: "Frequenz"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_1Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber"
+                            },
+                            {
+                                fieldName: "Leitung_2Netzbetreiber_MP_ID"
+                            },
+                            {
+                                fieldName: "Regelzone"
+                            },
+                            {
+                                fieldName: "Operator"
+                            },
+                            {
+                                fieldName: "Operator_Typ"
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+
+        //--------------------------------------------------------------Rest-------------------------------------------------------
+
+        var statesRenderer = new SimpleRenderer({
+            symbol: new SimpleFillSymbol({
+                color: [0, 255, 0, 0.0],
+                outline: {
+                    color: [255, 255, 255],
+                    width: 2
+                }
+            })
+        });
+
+        var statesLyr = new FeatureLayer({
+            url: "https://services2.arcgis.com/jUpNdisbWqRpMo35/arcgis/rest/services/Bundesl%C3%A4ndergrenzen_2020/FeatureServer/0",
+            renderer: statesRenderer
+        });
+
+        var map = new Map({
+            basemap: "hybrid",
+            layers: [statesLyr]
+        });
+
+        var view = new MapView({
+            container: "viewDiv",  // Reference to the scene div created in step 5
+            map: map,  // Reference to the map object created before the scene
+            zoom: 8,  // Sets zoom level based on level of detail (LOD)
+            center: [9.041044185337752, 48.53767048998313]  // Sets center point of view using longitude,latitude
+        });
+        view.graphics.addMany([polylineGraphic_Ubertragungsnetz11, polylineGraphic_Ubertragungsnetz12, polylineGraphic_Ubertragungsnetz21, polylineGraphic_Ubertragungsnetz22, polylineGraphic_Ubertragungsnetz31,
+            polylineGraphic_Ubertragungsnetz32, polylineGraphic_Ubertragungsnetz41, polylineGraphic_Ubertragungsnetz42, polylineGraphic_Ubertragungsnetz51, polylineGraphic_Ubertragungsnetz52,
+            polylineGraphic_Ubertragungsnetz61, polylineGraphic_Ubertragungsnetz62, polylineGraphic_Ubertragungsnetz71, polylineGraphic_Ubertragungsnetz72, polylineGraphic_Ubertragungsnetz81, polylineGraphic_Ubertragungsnetz82,
+            pointGraphic_Netzbetreiber_Mitte,
+            pointGraphic_Netzbetreiber_Nord,
+            pointGraphic_Netzbetreiber_Sued, pointGraphic_Netzbetreiber_West, pointGraphic_Netzbetreiber_Ost]);
+        //var legend = new Legend({
+        //    view: view,
+        //    layerInfos: [{
+        //        layer: statesLyr,
+        //        title: "Bundesländergrenzen"
+        //    }, {
+        //            layer: csvLayer,
+        //            title: "Kraftwerke"
+        //        }]
+        //});
+        //
+        //view.ui.add(legend, "bottom-right");
+
+    });
+</script>
