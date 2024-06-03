@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YXcO/uGnymNo6uNdhntu6ZmdLm/vBh5R4dKIqQRvsA/GcRYdVl+bYlh1QfkFPwwJfacZ62tOMjukRDvjF5an0Q==",
+  "dgSpecHash": "Vl9mylIoUMZmz/BNkRx50mbBJ9LDzkanojUYFH1JdUInBiRyp3kOW2uQtQOFK6kLJFR714G40vdEYZrp3slLMw==",
   "success": true,
-  "projectFilePath": "D:\\source\\repos\\DARE_Waive\\DARE_Waive\\DARE_Waive.csproj",
+  "projectFilePath": "D:\\source\\repos\\DARE_Waive\\DARE_Waive\\DARE_Waive\\DARE_Waive.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tolov\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\tolov\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
